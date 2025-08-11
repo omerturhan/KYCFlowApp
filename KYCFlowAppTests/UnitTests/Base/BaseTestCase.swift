@@ -1,4 +1,4 @@
 import XCTest
 @testable import KYCFlowApp
 
-class BaseTestCase: XCTestCase {}
+open class BaseTestCase: XCTestCase {}

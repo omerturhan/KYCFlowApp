@@ -117,6 +117,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3B7A6B52E49CEFD00EE68D1 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D3B7A27E2E4929BB00EE68D1 /* KYCFlowApp */,
@@ -285,6 +286,10 @@
 			isa = PBXTargetDependency;
 			target = D3B7A27B2E4929BB00EE68D1 /* KYCFlowApp */;
 			targetProxy = D3B7A2942E4929BD00EE68D1 /* PBXContainerItemProxy */;
+		};
+		D3B7A6B52E49CEFD00EE68D1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B7A6B42E49CEFD00EE68D1 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -618,6 +623,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D3B7A6242E49CDD200EE68D1 /* XCRemoteSwiftPackageReference "Yams" */;
 			productName = Yams;
+		};
+		D3B7A6B42E49CEFD00EE68D1 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3B7A61C2E49CD8200EE68D1 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
