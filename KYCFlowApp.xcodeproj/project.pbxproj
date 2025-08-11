@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D3B7A61F2E49CDBF00EE68D1 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = D3B7A61E2E49CDBF00EE68D1 /* InlineSnapshotTesting */; };
+		D3B7A6212E49CDBF00EE68D1 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = D3B7A6202E49CDBF00EE68D1 /* SnapshotTesting */; };
+		D3B7A6232E49CDBF00EE68D1 /* SnapshotTestingCustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = D3B7A6222E49CDBF00EE68D1 /* SnapshotTestingCustomDump */; };
+		D3B7A6262E49CDD200EE68D1 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = D3B7A6252E49CDD200EE68D1 /* Yams */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		D3B7A28A2E4929BD00EE68D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B7A6262E49CDD200EE68D1 /* Yams in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +67,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B7A6232E49CDBF00EE68D1 /* SnapshotTestingCustomDump in Frameworks */,
+				D3B7A61F2E49CDBF00EE68D1 /* InlineSnapshotTesting in Frameworks */,
+				D3B7A6212E49CDBF00EE68D1 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +123,7 @@
 			);
 			name = KYCFlowApp;
 			packageProductDependencies = (
+				D3B7A6252E49CDD200EE68D1 /* Yams */,
 			);
 			productName = KYCFlowApp;
 			productReference = D3B7A27C2E4929BB00EE68D1 /* KYCFlowApp.app */;
@@ -135,6 +147,9 @@
 			);
 			name = KYCFlowAppTests;
 			packageProductDependencies = (
+				D3B7A61E2E49CDBF00EE68D1 /* InlineSnapshotTesting */,
+				D3B7A6202E49CDBF00EE68D1 /* SnapshotTesting */,
+				D3B7A6222E49CDBF00EE68D1 /* SnapshotTestingCustomDump */,
 			);
 			productName = KYCFlowAppTests;
 			productReference = D3B7A2892E4929BD00EE68D1 /* KYCFlowAppTests.xctest */;
@@ -195,6 +210,11 @@
 			);
 			mainGroup = D3B7A2732E4929BB00EE68D1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D3B7A61C2E49CD8200EE68D1 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				D3B7A61D2E49CDBF00EE68D1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				D3B7A6242E49CDD200EE68D1 /* XCRemoteSwiftPackageReference "Yams" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D3B7A27D2E4929BB00EE68D1 /* Products */;
 			projectDirPath = "";
@@ -550,6 +570,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D3B7A61C2E49CD8200EE68D1 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.59.1;
+			};
+		};
+		D3B7A61D2E49CDBF00EE68D1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.6;
+			};
+		};
+		D3B7A6242E49CDD200EE68D1 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D3B7A61E2E49CDBF00EE68D1 /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3B7A61D2E49CDBF00EE68D1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		D3B7A6202E49CDBF00EE68D1 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3B7A61D2E49CDBF00EE68D1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+		D3B7A6222E49CDBF00EE68D1 /* SnapshotTestingCustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3B7A61D2E49CDBF00EE68D1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTestingCustomDump;
+		};
+		D3B7A6252E49CDD200EE68D1 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3B7A6242E49CDD200EE68D1 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D3B7A2742E4929BB00EE68D1 /* Project object */;
 }
