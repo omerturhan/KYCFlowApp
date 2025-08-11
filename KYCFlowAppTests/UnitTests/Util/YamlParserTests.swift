@@ -84,7 +84,10 @@ final class YamlParserTests: BaseTestCase {
     
     func testLoadYamlFromData() throws {
         let yamlString = "key: value"
-        let data = yamlString.data(using: .utf8)!
+        guard let data = yamlString.data(using: .utf8) else {
+            XCTFail("Failed to create data from string")
+            return
+        }
         
         let loaded = try sut.loadYaml(from: data)
         

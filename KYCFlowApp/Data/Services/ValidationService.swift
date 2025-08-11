@@ -7,21 +7,20 @@ protocol ValidationServiceProtocol {
 }
 
 final class ValidationService: ValidationServiceProtocol {
-    
     func validate(value: Any?, rule: ValidationRule) -> ValidationResult {
         switch rule.type {
-        case .required:
-            return validateRequired(value: value, message: rule.message)
-        case .regex:
-            return validateRegex(value: value, pattern: rule.value ?? "", message: rule.message)
-        case .minLength:
-            return validateMinLength(value: value, minLength: rule.value ?? "0", message: rule.message)
-        case .maxLength:
-            return validateMaxLength(value: value, maxLength: rule.value ?? "0", message: rule.message)
-        case .minValue:
-            return validateMinValue(value: value, minValue: rule.value ?? "0", message: rule.message)
-        case .maxValue:
-            return validateMaxValue(value: value, maxValue: rule.value ?? "0", message: rule.message)
+            case .required:
+                return validateRequired(value: value, message: rule.message)
+            case .regex:
+                return validateRegex(value: value, pattern: rule.value ?? "", message: rule.message)
+            case .minLength:
+                return validateMinLength(value: value, minLength: rule.value ?? "0", message: rule.message)
+            case .maxLength:
+                return validateMaxLength(value: value, maxLength: rule.value ?? "0", message: rule.message)
+            case .minValue:
+                return validateMinValue(value: value, minValue: rule.value ?? "0", message: rule.message)
+            case .maxValue:
+                return validateMaxValue(value: value, maxValue: rule.value ?? "0", message: rule.message)
         }
     }
     

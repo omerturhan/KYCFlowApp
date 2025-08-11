@@ -53,7 +53,10 @@ final class UserProfileTests: BaseTestCase {
         }
         """
         
-        let data = json.data(using: .utf8)!
+        guard let data = json.data(using: .utf8) else {
+            XCTFail("Failed to create data from JSON string")
+            return
+        }
         let profile = try JSONDecoder().decode(UserProfile.self, from: data)
         
         XCTAssertEqual(profile.firstName, "Alice")
@@ -71,7 +74,10 @@ final class UserProfileTests: BaseTestCase {
         )
         
         let encoded = try JSONEncoder().encode(profile)
-        let json = try JSONSerialization.jsonObject(with: encoded) as! [String: Any]
+        guard let json = try JSONSerialization.jsonObject(with: encoded) as? [String: Any] else {
+            XCTFail("Failed to decode JSON object")
+            return
+        }
         
         XCTAssertEqual(json["first_name"] as? String, "Bob")
         XCTAssertEqual(json["last_name"] as? String, "Smith")
