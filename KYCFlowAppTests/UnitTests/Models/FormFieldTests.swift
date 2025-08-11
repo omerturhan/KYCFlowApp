@@ -13,7 +13,7 @@ final class FormFieldTests: XCTestCase {
         XCTAssertEqual(field.label, "First Name")
         XCTAssertEqual(field.type, .text)
         XCTAssertFalse(field.required)
-        XCTAssertTrue(field.validation.isEmpty)
+        XCTAssertNil(field.validation)
         XCTAssertNil(field.dataSource)
         XCTAssertFalse(field.readOnly)
     }
@@ -38,7 +38,7 @@ final class FormFieldTests: XCTestCase {
         XCTAssertEqual(field.label, "Birth Date")
         XCTAssertEqual(field.type, .date)
         XCTAssertTrue(field.required)
-        XCTAssertEqual(field.validation.count, 2)
+        XCTAssertEqual(field.validation?.count, 2)
         XCTAssertEqual(field.dataSource, "user_profile")
         XCTAssertTrue(field.readOnly)
     }

@@ -1,0 +1,41 @@
+country: NL
+dataSources:
+  - id: user_profile
+    type: api
+    endpoint: /api/nl-user-profile
+    fields:
+      - first_name
+      - last_name
+      - birth_date
+
+fields:
+  - id: first_name
+    label: First Name
+    type: text
+    required: true
+    dataSource: user_profile
+    readOnly: true
+    
+  - id: last_name
+    label: Last Name
+    type: text
+    required: true
+    dataSource: user_profile
+    readOnly: true
+    
+  - id: birth_date
+    label: Birth Date
+    type: date
+    required: true
+    dataSource: user_profile
+    readOnly: true
+    
+  - id: bsn
+    label: BSN
+    type: text
+    required: true
+    validation:
+      - type: regex
+        value: '^\d{9}$'
+        message: BSN must be 9 digits
+    readOnly: false

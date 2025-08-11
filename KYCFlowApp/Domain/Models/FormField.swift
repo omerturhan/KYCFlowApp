@@ -11,7 +11,7 @@ struct FormField: Codable, Equatable {
     let label: String
     let type: FieldType
     let required: Bool
-    let validation: [ValidationRule]
+    let validation: [ValidationRule]? // swiftlint:disable:this discouraged_optional_collection
     let dataSource: String?
     let readOnly: Bool
     
@@ -20,7 +20,7 @@ struct FormField: Codable, Equatable {
         label: String,
         type: FieldType,
         required: Bool = false,
-        validation: [ValidationRule] = [],
+        validation: [ValidationRule]? = nil, // swiftlint:disable:this discouraged_optional_collection
         dataSource: String? = nil,
         readOnly: Bool = false
     ) {
