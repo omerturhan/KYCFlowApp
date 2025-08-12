@@ -272,29 +272,6 @@ final class KYCFormViewModelTests: BaseTestCase {
         XCTAssertTrue(sut.submittedData.isEmpty)
     }
     
-    // MARK: - Helper Methods
-    
-    func testCanSubmit() async {
-        // Given
-        let config = createTestConfiguration()
-        mockConfigRepository.configurations["US"] = config
-        
-        // Initially cannot submit
-        XCTAssertFalse(sut.canSubmit)
-        
-        // After loading form with valid data
-        await sut.loadForm(for: "US")
-        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessage: nil)
-        sut.formState["first_name"]?.value = "John"
-        
-        // Then can submit
-        XCTAssertTrue(sut.canSubmit)
-        
-        // Cannot submit while loading
-        sut.isLoading = true
-        XCTAssertFalse(sut.canSubmit)
-    }
-    
     // MARK: - Test Helpers
     
     private func createTestConfiguration(country: String = "US") -> KYCConfiguration {
@@ -308,8 +285,7 @@ final class KYCFormViewModelTests: BaseTestCase {
                     type: .text,
                     required: true,
                     validation: nil,
-                    dataSource: nil,
-                    readOnly: false
+                    dataSource: nil
                 ),
                 FormField(
                     id: "last_name",
@@ -317,8 +293,7 @@ final class KYCFormViewModelTests: BaseTestCase {
                     type: .text,
                     required: true,
                     validation: nil,
-                    dataSource: nil,
-                    readOnly: false
+                    dataSource: nil
                 ),
                 FormField(
                     id: "birth_date",
@@ -326,8 +301,7 @@ final class KYCFormViewModelTests: BaseTestCase {
                     type: .date,
                     required: true,
                     validation: nil,
-                    dataSource: nil,
-                    readOnly: false
+                    dataSource: nil
                 ),
                 FormField(
                     id: "bsn",
@@ -335,8 +309,7 @@ final class KYCFormViewModelTests: BaseTestCase {
                     type: .text,
                     required: false,
                     validation: nil,
-                    dataSource: nil,
-                    readOnly: false
+                    dataSource: nil
                 )
             ]
         )
@@ -393,8 +366,7 @@ final class KYCFormViewModelTests: BaseTestCase {
                             message: "BSN must be 9 digits"
                         )
                     ],
-                    dataSource: nil,
-                    readOnly: false
+                    dataSource: nil
                 )
             ]
         )

@@ -14,8 +14,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -36,8 +35,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -58,8 +56,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -104,8 +101,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .number,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -126,8 +122,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .number,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -172,8 +167,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .date,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -194,8 +188,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .date,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -240,8 +233,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: false,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -262,8 +254,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: false,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(
@@ -284,8 +275,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
             type: .text,
             required: true,
             validation: nil,
-            dataSource: nil,
-            readOnly: false
+            dataSource: nil
         )
         
         let view = InputFieldView(

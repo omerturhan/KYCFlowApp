@@ -7,43 +7,53 @@ fields:
     type: text
     required: true
     validation:
-      - type: minLength
-        value: '2'
-        message: First name must be at least 2 characters
-    readOnly: false
+      minLength: 
+        value: 2
+        message: 'First name must be at least 2 characters'
+      maxLength: 
+        value: 50
+        message: 'First name cannot exceed 50 characters'
     
   - id: last_name
     label: Last Name
     type: text
     required: true
     validation:
-      - type: minLength
-        value: '2'
-        message: Last name must be at least 2 characters
-    readOnly: false
+      minLength: 
+        value: 2
+        message: 'Last name must be at least 2 characters'
+      maxLength: 
+        value: 50
+        message: 'Last name cannot exceed 50 characters'
     
   - id: birth_date
     label: Birth Date
     type: date
     required: true
-    readOnly: false
     
   - id: ssn
     label: SSN
     type: text
     required: true
     validation:
-      - type: regex
+      regex: 
         value: '^\d{3}-\d{2}-\d{4}$'
-        message: SSN must be in format XXX-XX-XXXX
-    readOnly: false
+        message: 'SSN must be in format XXX-XX-XXXX'
     
   - id: phone
     label: Phone Number
     type: text
     required: true
     validation:
-      - type: regex
+      regex: 
         value: '^\+?1?\d{10,14}$'
-        message: Please enter a valid phone number
-    readOnly: false
+        message: 'Please enter a valid phone number'
+    
+  - id: zip_code
+    label: ZIP Code
+    type: text
+    required: true
+    validation:
+      maxLength: 
+        value: 10
+        message: 'ZIP code cannot exceed 10 characters'

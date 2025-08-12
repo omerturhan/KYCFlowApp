@@ -71,7 +71,6 @@ final class YamlParserTests: BaseTestCase {
             label: Test Field
             type: text
             required: true
-            readOnly: false
         """
         
         let config = try sut.decode(KYCConfiguration.self, from: yamlString)
@@ -80,6 +79,24 @@ final class YamlParserTests: BaseTestCase {
         XCTAssertTrue(config.dataSources.isEmpty)
         XCTAssertEqual(config.fields.count, 1)
         XCTAssertEqual(config.fields.first?.id, "test_field")
+        XCTAssertFalse(config.fields.first?.readOnly ?? true, "readOnly should default to false when not present")
+    }
+    
+    func testDecodeKYCConfigurationWithExplicitReadOnly() throws {
+        let yamlString = """
+        country: TEST
+        dataSources: []
+        fields:
+          - id: test_field
+            label: Test Field
+            type: text
+            required: true
+            readOnly: true
+        """
+        
+        let config = try sut.decode(KYCConfiguration.self, from: yamlString)
+        
+        XCTAssertEqual(config.fields.first?.readOnly, true)
     }
     
     func testLoadYamlFromData() throws {
@@ -100,6 +117,120 @@ final class YamlParserTests: BaseTestCase {
         XCTAssertThrows {
             _ = try sut.loadYaml(from: data)
         }
+    }
+    
+    func testDecodeKYCConfigurationWithSimpleValidation() throws {
+        let yamlString = """
+        country: NL
+        dataSources: []
+        fields:
+          - id: bsn
+            label: BSN
+            type: text
+            required: true
+            validation:
+              regex: '^\\d{9}$'
+              message: 'BSN must be 9 digits'
+        """
+        
+        let config = try sut.decode(KYCConfiguration.self, from: yamlString)
+        
+        XCTAssertEqual(config.fields.count, 1)
+        XCTAssertEqual(config.fields.first?.id, "bsn")
+        XCTAssertNotNil(config.fields.first?.validation)
+        XCTAssertEqual(config.fields.first?.validation?.count, 1)
+        XCTAssertEqual(config.fields.first?.validation?.first?.type, .regex)
+        XCTAssertEqual(config.fields.first?.validation?.first?.value, "^\\d{9}$")
+        XCTAssertEqual(config.fields.first?.validation?.first?.message, "BSN must be 9 digits")
+    }
+    
+    func testDecodeKYCConfigurationWithMinLengthValidation() throws {
+        let yamlString = """
+        country: US
+        dataSources: []
+        fields:
+          - id: first_name
+            label: First Name
+            type: text
+            required: true
+            validation:
+              minLength: 2
+              message: 'Name must be at least 2 characters'
+        """
+        
+        let config = try sut.decode(KYCConfiguration.self, from: yamlString)
+        
+        XCTAssertEqual(config.fields.first?.validation?.count, 1)
+        XCTAssertEqual(config.fields.first?.validation?.first?.type, .minLength)
+        XCTAssertEqual(config.fields.first?.validation?.first?.value, "2")
+        XCTAssertEqual(config.fields.first?.validation?.first?.message, "Name must be at least 2 characters")
+    }
+    
+    func testDecodeKYCConfigurationWithMinAndMaxLength() throws {
+        let yamlString = """
+        country: US
+        dataSources: []
+        fields:
+          - id: first_name
+            label: First Name
+            type: text
+            required: true
+            validation:
+              minLength: 2
+              maxLength: 50
+              message: 'Name must be between 2 and 50 characters'
+        """
+        
+        let config = try sut.decode(KYCConfiguration.self, from: yamlString)
+        
+        XCTAssertEqual(config.fields.first?.validation?.count, 2)
+        
+        let validationRules = config.fields.first?.validation ?? []
+        let minLengthRule = validationRules.first { $0.type == .minLength }
+        let maxLengthRule = validationRules.first { $0.type == .maxLength }
+        
+        XCTAssertNotNil(minLengthRule)
+        XCTAssertEqual(minLengthRule?.value, "2")
+        XCTAssertEqual(minLengthRule?.message, "Name must be between 2 and 50 characters")
+        
+        XCTAssertNotNil(maxLengthRule)
+        XCTAssertEqual(maxLengthRule?.value, "50")
+        XCTAssertEqual(maxLengthRule?.message, "Name must be between 2 and 50 characters")
+    }
+    
+    func testDecodeKYCConfigurationWithIndividualMessages() throws {
+        let yamlString = """
+        country: US
+        dataSources: []
+        fields:
+          - id: first_name
+            label: First Name
+            type: text
+            required: true
+            validation:
+              minLength:
+                value: 2
+                message: 'First name must be at least 2 characters'
+              maxLength:
+                value: 50
+                message: 'First name cannot exceed 50 characters'
+        """
+        
+        let config = try sut.decode(KYCConfiguration.self, from: yamlString)
+        
+        XCTAssertEqual(config.fields.first?.validation?.count, 2)
+        
+        let validationRules = config.fields.first?.validation ?? []
+        let minLengthRule = validationRules.first { $0.type == .minLength }
+        let maxLengthRule = validationRules.first { $0.type == .maxLength }
+        
+        XCTAssertNotNil(minLengthRule)
+        XCTAssertEqual(minLengthRule?.value, "2")
+        XCTAssertEqual(minLengthRule?.message, "First name must be at least 2 characters")
+        
+        XCTAssertNotNil(maxLengthRule)
+        XCTAssertEqual(maxLengthRule?.value, "50")
+        XCTAssertEqual(maxLengthRule?.message, "First name cannot exceed 50 characters")
     }
     
     func testDecodeArrayYaml() throws {

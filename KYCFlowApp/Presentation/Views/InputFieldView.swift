@@ -47,10 +47,12 @@ private extension InputFieldView {
     
     /// Common label with required indicator
     var fieldLabel: some View {
-        HStack {
+        HStack(alignment: .top) {
             Text(field.label)
                 .font(.headline)
                 .foregroundColor(.primary)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
             
             if field.required {
                 Text("*")
@@ -65,8 +67,8 @@ private extension InputFieldView {
     /// Read-only field display
     var readOnlyField: some View {
         Text(displayValue)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+            .padding(.horizontal)
             .background(Color.gray.opacity(0.1))
             .cornerRadius(8)
             .overlay(
@@ -91,7 +93,14 @@ private extension InputFieldView {
     /// Text input field
     var textInput: some View {
         TextField(field.label, text: $value)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .padding(.horizontal)
+            .frame(height: 44)
+            .background(Color.white)
+            .cornerRadius(8)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(error != nil ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
+            )
             .disabled(isLoading)
             .autocapitalization(.none)
             .disableAutocorrection(true)
@@ -106,7 +115,14 @@ private extension InputFieldView {
                 value = newValue.filter { $0.isNumber }
             }
         ))
-        .textFieldStyle(RoundedBorderTextFieldStyle())
+        .padding(.horizontal)
+        .frame(height: 44)
+        .background(Color.white)
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(error != nil ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
+        )
         .keyboardType(.numberPad)
         .disabled(isLoading)
     }
@@ -123,11 +139,13 @@ private extension InputFieldView {
                 Image(systemName: "calendar")
                     .foregroundColor(.blue)
             }
-            .padding()
-            .background(Color(UIColor.systemBackground))
+            .frame(height: 44)
+            .padding(.horizontal)
+            .background(Color.white)
+            .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    .stroke(error != nil ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
             )
         }
         .disabled(isLoading)
