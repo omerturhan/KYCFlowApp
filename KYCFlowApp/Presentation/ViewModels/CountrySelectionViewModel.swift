@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 final class CountrySelectionViewModel: ObservableObject {
     @Published var availableCountries: [String] = []
-    @Published var selectedCountry: String?
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -28,26 +27,5 @@ final class CountrySelectionViewModel: ObservableObject {
         }
         
         isLoading = false
-    }
-    
-    func selectCountry(_ country: String) {
-        guard availableCountries.contains(country) else {
-            errorMessage = "Invalid country selection"
-            return
-        }
-        selectedCountry = country
-    }
-    
-    func clearSelection() {
-        selectedCountry = nil
-        errorMessage = nil
-    }
-    
-    var hasSelection: Bool {
-        selectedCountry != nil
-    }
-    
-    var canProceed: Bool {
-        hasSelection && !isLoading
     }
 }

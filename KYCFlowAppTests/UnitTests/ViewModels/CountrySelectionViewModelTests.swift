@@ -22,11 +22,8 @@ final class CountrySelectionViewModelTests: BaseTestCase {
     @MainActor
     func testInitialState() {
         XCTAssertTrue(sut.availableCountries.isEmpty)
-        XCTAssertNil(sut.selectedCountry)
         XCTAssertFalse(sut.isLoading)
         XCTAssertNil(sut.errorMessage)
-        XCTAssertFalse(sut.hasSelection)
-        XCTAssertFalse(sut.canProceed)
     }
     
     @MainActor
@@ -57,64 +54,7 @@ final class CountrySelectionViewModelTests: BaseTestCase {
         XCTAssertNotNil(sut.errorMessage)
     }
     
-    @MainActor
-    func testSelectValidCountry() async {
-        // Given
-        mockRepository.availableCountries = ["US", "NL", "DE"]
-        await sut.loadCountries()
-        
-        // When
-        sut.selectCountry("NL")
-        
-        // Then
-        XCTAssertEqual(sut.selectedCountry, "NL")
-        XCTAssertTrue(sut.hasSelection)
-        XCTAssertTrue(sut.canProceed)
-        XCTAssertNil(sut.errorMessage)
-    }
     
-    @MainActor
-    func testSelectInvalidCountry() async {
-        // Given
-        mockRepository.availableCountries = ["US", "NL", "DE"]
-        await sut.loadCountries()
-        
-        // When
-        sut.selectCountry("FR")
-        
-        // Then
-        XCTAssertNil(sut.selectedCountry)
-        XCTAssertFalse(sut.hasSelection)
-        XCTAssertFalse(sut.canProceed)
-        XCTAssertNotNil(sut.errorMessage)
-    }
-    
-    @MainActor
-    func testClearSelection() {
-        // Given
-        sut.selectedCountry = "NL"
-        sut.errorMessage = "Some error"
-        
-        // When
-        sut.clearSelection()
-        
-        // Then
-        XCTAssertNil(sut.selectedCountry)
-        XCTAssertNil(sut.errorMessage)
-        XCTAssertFalse(sut.hasSelection)
-        XCTAssertFalse(sut.canProceed)
-    }
-    
-    @MainActor
-    func testCannotProceedWhileLoading() {
-        // Given
-        sut.selectedCountry = "NL"
-        sut.isLoading = true
-        
-        // Then
-        XCTAssertTrue(sut.hasSelection)
-        XCTAssertFalse(sut.canProceed) // Cannot proceed while loading
-    }
 }
 
 // Mock repository for testing
