@@ -2,9 +2,9 @@ import XCTest
 @testable import KYCFlowApp
 
 @MainActor
-final class KYCFormViewModelTests: BaseTestCase {
+final class DynamicFormViewModelTests: BaseTestCase {
     
-    var sut: KYCFormViewModel!
+    var sut: DynamicFormViewModel!
     var mockConfigRepository: MockKYCConfigurationRepository!
     var mockUserRepository: TestableMockUserProfileRepository!
     var mockValidationService: MockValidationService!
@@ -15,7 +15,7 @@ final class KYCFormViewModelTests: BaseTestCase {
         mockUserRepository = TestableMockUserProfileRepository()
         mockValidationService = MockValidationService()
         
-        sut = KYCFormViewModel(
+        sut = DynamicFormViewModel(
             configurationRepository: mockConfigRepository,
             userProfileRepository: mockUserRepository,
             validationService: mockValidationService
@@ -130,7 +130,6 @@ final class KYCFormViewModelTests: BaseTestCase {
         let config = createTestConfiguration()
         mockConfigRepository.configurations["US"] = config
         await sut.loadForm(for: "US")
-        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessage: nil)
         
         // When
         sut.updateFieldValue("first_name", value: "John")
@@ -138,25 +137,26 @@ final class KYCFormViewModelTests: BaseTestCase {
         // Then
         XCTAssertEqual(sut.formState["first_name"]?.value as? String, "John")
         XCTAssertNil(sut.formState["first_name"]?.error)
-        XCTAssertTrue(mockValidationService.validateFieldCalled)
+        // Validation should NOT be called during input
+        XCTAssertFalse(mockValidationService.validateFieldCalled)
     }
     
-    func testUpdateFieldValueWithValidationError() async {
+    func testUpdateFieldValueClearsExistingError() async {
         // Given
         let config = createTestConfiguration()
         mockConfigRepository.configurations["US"] = config
         await sut.loadForm(for: "US")
-        mockValidationService.validationResult = ValidationResult(
-            isValid: false,
-            errorMessage: "Field is required"
-        )
+        
+        // Set an error initially
+        sut.formState["first_name"]?.error = "Previous error"
         
         // When
-        sut.updateFieldValue("first_name", value: "")
+        sut.updateFieldValue("first_name", value: "New Value")
         
         // Then
-        XCTAssertEqual(sut.formState["first_name"]?.value as? String, "")
-        XCTAssertEqual(sut.formState["first_name"]?.error, "Field is required")
+        XCTAssertEqual(sut.formState["first_name"]?.value as? String, "New Value")
+        // Error should be cleared when user types
+        XCTAssertNil(sut.formState["first_name"]?.error)
     }
     
     // MARK: - Validation Tests
@@ -247,6 +247,36 @@ final class KYCFormViewModelTests: BaseTestCase {
         XCTAssertTrue(result.isEmpty)
         XCTAssertFalse(sut.isSubmitted)
         XCTAssertEqual(sut.errorMessage, "Please fix all errors before submitting")
+        // Validation should be called during submission
+        XCTAssertTrue(mockValidationService.validateFieldCalled)
+    }
+    
+    func testValidationOnlyOccursOnSubmission() async {
+        // Given
+        let config = createTestConfiguration()
+        mockConfigRepository.configurations["US"] = config
+        await sut.loadForm(for: "US")
+        
+        // When typing in fields (before submission)
+        sut.updateFieldValue("first_name", value: "")
+        sut.updateFieldValue("last_name", value: "")
+        
+        // Then - no validation errors should appear
+        XCTAssertNil(sut.formState["first_name"]?.error)
+        XCTAssertNil(sut.formState["last_name"]?.error)
+        XCTAssertFalse(mockValidationService.validateFieldCalled)
+        
+        // When submitting with invalid data
+        mockValidationService.validationResult = ValidationResult(
+            isValid: false,
+            errorMessage: "Field is required"
+        )
+        _ = sut.submitForm()
+        
+        // Then - validation errors should now appear
+        XCTAssertNotNil(sut.formState["first_name"]?.error)
+        XCTAssertNotNil(sut.formState["last_name"]?.error)
+        XCTAssertTrue(mockValidationService.validateFieldCalled)
     }
     
     // MARK: - Reset Form Tests

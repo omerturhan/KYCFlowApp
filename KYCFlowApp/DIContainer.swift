@@ -34,8 +34,8 @@ final class DIContainer: ObservableObject {
     }
     
     @MainActor
-    func makeKYCFormViewModel() -> KYCFormViewModel {
-        KYCFormViewModel(
+    func makeKYCFormViewModel() -> DynamicFormViewModel {
+        DynamicFormViewModel(
             configurationRepository: kycConfigurationRepository,
             userProfileRepository: userProfileRepository,
             validationService: validationService

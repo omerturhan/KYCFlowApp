@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class KYCFormViewModel: ObservableObject {
+final class DynamicFormViewModel: ObservableObject {
     @Published var formState: FormState = [:]
     @Published var isLoading = false
     @Published var configuration: KYCConfiguration?
@@ -118,15 +118,22 @@ final class KYCFormViewModel: ObservableObject {
     func updateFieldValue(_ fieldId: String, value: Any?) {
         formState.updateValue(for: fieldId, value: value)
         
-        // Validate the field immediately
-        if let field = configuration?.fields.first(where: { $0.id == fieldId }) {
-            validateField(field)
-        }
+        // Clear any existing error when user modifies the field
+        formState.setError(for: fieldId, error: nil)
+        
+        // Trigger UI update for canSubmit
+        objectWillChange.send()
     }
     
     // MARK: - Validation
     
     func validateField(_ field: FormField) {
+        // Skip validation for read-only fields
+        if field.readOnly {
+            formState.setError(for: field.id, error: nil)
+            return
+        }
+        
         let value = formState.getValue(for: field.id)
         let result = validationService.validateField(field, value: value)
         
@@ -145,6 +152,11 @@ final class KYCFormViewModel: ObservableObject {
         var isValid = true
         
         for field in config.fields {
+            // Skip validation for read-only fields
+            if field.readOnly {
+                continue
+            }
+            
             validateField(field)
             if formState[field.id]?.hasError == true {
                 isValid = false
@@ -157,8 +169,10 @@ final class KYCFormViewModel: ObservableObject {
     // MARK: - Form Submission
     
     func submitForm() -> [String: Any] {
+        // Always validate all fields on submission
         guard validateAllFields() else {
             errorMessage = "Please fix all errors before submitting"
+            // Return empty dictionary to indicate validation failed
             return [:]
         }
         
@@ -174,6 +188,7 @@ final class KYCFormViewModel: ObservableObject {
         
         submittedData = result
         isSubmitted = true
+        errorMessage = nil // Clear any previous error messages on successful submission
         
         return result
     }
@@ -188,8 +203,26 @@ final class KYCFormViewModel: ObservableObject {
         submittedData = [:]
     }
     
+    // Note: canSubmit is kept for compatibility but not used for button state anymore
+    // The submit button is always enabled, validation happens on submission
     var canSubmit: Bool {
-        !isLoading && configuration != nil && formState.isValid()
+        guard !isLoading, let config = configuration else {
+            return false
+        }
+        
+        // Check all required fields have values
+        for field in config.fields {
+            let value = formState.getValue(for: field.id)
+            
+            // Check required fields have values
+            if field.required {
+                if value == nil || (value as? String)?.isEmpty == true {
+                    return false
+                }
+            }
+        }
+        
+        return true
     }
     
     var hasConfiguration: Bool {
