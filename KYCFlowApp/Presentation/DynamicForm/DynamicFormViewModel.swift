@@ -92,17 +92,30 @@ final class DynamicFormViewModel: ObservableObject {
     }
 
     private func loadDataFromSource(_ dataSource: DataSource, fields: [FormField], country: String) async {
-        guard dataSource.type == .api else {
+        guard dataSource.type == .api,
+              let endpoint = dataSource.endpoint else {
             return
         }
 
         do {
-            let profileData = try await userProfileRepository.fetchUserProfile(country: country)
+            // Extract field IDs to request from the API
+            let fieldIds = fields.map { $0.id }
+            
+            // Fetch only the requested fields from the endpoint
+            let profileData = try await userProfileRepository.fetchUserProfile(
+                endpoint: endpoint,
+                fields: fieldIds
+            )
 
             // Map the fetched data to form fields
             for field in fields {
                 if let value = profileData[field.id] {
-                    formState.updateValue(for: field.id, value: value)
+                    // Handle NSNull from API
+                    if value is NSNull {
+                        formState.updateValue(for: field.id, value: nil)
+                    } else {
+                        formState.updateValue(for: field.id, value: value)
+                    }
                 }
             }
         } catch {

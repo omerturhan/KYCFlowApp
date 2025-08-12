@@ -442,16 +442,23 @@ final class TestableMockUserProfileRepository: MockUserProfileRepository {
     var mockData: [String: Any] = [:]
     var shouldThrowError = false
     
-    override func fetchUserProfile(country: String) async throws -> [String: Any] {
+    override func fetchUserProfile(endpoint: String, fields: [String]) async throws -> [String: Any] {
         if shouldThrowError {
-            throw RepositoryError.invalidCountry("Test error")
+            throw RepositoryError.apiError("Test error")
         }
         
         // Return custom mock data if set, otherwise use parent implementation
         if !mockData.isEmpty {
-            return mockData
+            // Filter mock data to only include requested fields
+            var filteredData: [String: Any] = [:]
+            for field in fields {
+                if let value = mockData[field] {
+                    filteredData[field] = value
+                }
+            }
+            return filteredData
         }
         
-        return try await super.fetchUserProfile(country: country)
+        return try await super.fetchUserProfile(endpoint: endpoint, fields: fields)
     }
 }

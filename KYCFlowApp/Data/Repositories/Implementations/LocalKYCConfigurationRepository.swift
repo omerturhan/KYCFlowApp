@@ -4,6 +4,7 @@ enum RepositoryError: Error {
     case fileNotFound(String)
     case decodingError(String)
     case invalidCountry(String)
+    case apiError(String)
 }
 
 final class LocalKYCConfigurationRepository: KYCConfigurationRepository {

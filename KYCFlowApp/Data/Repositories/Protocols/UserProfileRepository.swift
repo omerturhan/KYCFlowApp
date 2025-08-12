@@ -1,5 +1,5 @@
 import Foundation
 
 protocol UserProfileRepository {
-    func fetchUserProfile(country: String) async throws -> [String: Any]
+    func fetchUserProfile(endpoint: String, fields: [String]) async throws -> [String: Any]
 }
