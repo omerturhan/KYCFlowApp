@@ -23,13 +23,25 @@ struct ValidationRule: Codable, Equatable {
 
 struct ValidationResult: Equatable {
     let isValid: Bool
-    let errorMessage: String?
+    let errorMessages: [String]
 
     static var valid: ValidationResult {
-        ValidationResult(isValid: true, errorMessage: nil)
+        ValidationResult(isValid: true, errorMessages: [])
     }
 
     static func invalid(_ message: String) -> ValidationResult {
-        ValidationResult(isValid: false, errorMessage: message)
+        ValidationResult(isValid: false, errorMessages: [message])
+    }
+    
+    static func invalid(_ messages: [String]) -> ValidationResult {
+        ValidationResult(isValid: false, errorMessages: messages)
+    }
+    
+    var errorMessage: String? {
+        errorMessages.first
+    }
+    
+    var allErrorMessages: String? {
+        errorMessages.isEmpty ? nil : errorMessages.joined(separator: "\n")
     }
 }

@@ -92,8 +92,8 @@ final class DynamicFormViewModel: ObservableObject {
     }
     
     private func loadDataFromSource(_ dataSource: DataSource, fields: [FormField], country: String) async {
-        guard dataSource.type == .api else { 
-            return 
+        guard dataSource.type == .api else {
+            return
         }
         
         do {
@@ -140,13 +140,13 @@ final class DynamicFormViewModel: ObservableObject {
         if result.isValid {
             formState.setError(for: field.id, error: nil)
         } else {
-            formState.setError(for: field.id, error: result.errorMessage)
+            formState.setError(for: field.id, error: result.allErrorMessages)
         }
     }
     
     func validateAllFields() -> Bool {
-        guard let config = configuration else { 
-            return false 
+        guard let config = configuration else {
+            return false
         }
         
         var isValid = true

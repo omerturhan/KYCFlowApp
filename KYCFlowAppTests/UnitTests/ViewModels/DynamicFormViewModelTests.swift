@@ -166,7 +166,7 @@ final class DynamicFormViewModelTests: BaseTestCase {
         let config = createTestConfiguration()
         mockConfigRepository.configurations["US"] = config
         await sut.loadForm(for: "US")
-        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessage: nil)
+        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessages: [])
         
         // Populate all fields
         sut.formState["first_name"]?.value = "John"
@@ -209,7 +209,7 @@ final class DynamicFormViewModelTests: BaseTestCase {
         let config = createTestConfiguration()
         mockConfigRepository.configurations["US"] = config
         await sut.loadForm(for: "US")
-        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessage: nil)
+        mockValidationService.validationResult = ValidationResult(isValid: true, errorMessages: [])
         
         // Populate all fields
         sut.formState["first_name"]?.value = "John"
@@ -237,7 +237,7 @@ final class DynamicFormViewModelTests: BaseTestCase {
         await sut.loadForm(for: "US")
         mockValidationService.validationResult = ValidationResult(
             isValid: false,
-            errorMessage: "Validation failed"
+            errorMessages: ["Validation failed"]
         )
         
         // When
@@ -269,7 +269,7 @@ final class DynamicFormViewModelTests: BaseTestCase {
         // When submitting with invalid data
         mockValidationService.validationResult = ValidationResult(
             isValid: false,
-            errorMessage: "Field is required"
+            errorMessages: ["Field is required"]
         )
         _ = sut.submitForm()
         
@@ -406,7 +406,7 @@ final class DynamicFormViewModelTests: BaseTestCase {
 // MARK: - Mock Validation Service
 
 final class MockValidationService: ValidationServiceProtocol {
-    var validationResult = ValidationResult(isValid: true, errorMessage: nil)
+    var validationResult = ValidationResult(isValid: true, errorMessages: [])
     var validateFieldCalled = false
     var shouldFailForFields: Set<String> = []
     
@@ -420,7 +420,7 @@ final class MockValidationService: ValidationServiceProtocol {
         if shouldFailForFields.contains(field.id) {
             return ValidationResult(
                 isValid: false,
-                errorMessage: "Validation failed for \(field.id)"
+                errorMessages: ["Validation failed for \(field.id)"]
             )
         }
         

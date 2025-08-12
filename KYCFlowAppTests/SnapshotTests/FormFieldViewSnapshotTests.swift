@@ -182,4 +182,61 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         
         assertSnapshot(of: view, size: TestDevice.formFieldSize)
     }
+    
+    // MARK: - Multiple Errors Tests
+    
+    func testFormFieldViewTextWithMultipleErrors() {
+        let field = FormField(
+            id: "username",
+            label: "Username",
+            type: .text,
+            required: true,
+            validation: [
+                ValidationRule(type: .minLength, value: "3", message: "Username must be at least 3 characters"),
+                ValidationRule(type: .maxLength, value: "20", message: "Username must be at most 20 characters"),
+                ValidationRule(type: .regex, value: "^[a-zA-Z0-9]+$", message: "Username must contain only letters and numbers")
+            ],
+            dataSource: nil
+        )
+        
+        let view = FormFieldView(
+            field: field,
+            fieldState: .constant(FormFieldState(
+                value: "ab",
+                error: "Username must be at least 3 characters\nUsername must contain only letters and numbers",
+                isLoading: false,
+                isReadOnly: false
+            ))
+        )
+        .padding()
+        
+        assertSnapshot(of: view, size: TestDevice.formFieldWithMultipleErrorsSize)
+    }
+    
+    func testFormFieldViewNumberWithMultipleErrors() {
+        let field = FormField(
+            id: "age",
+            label: "Age",
+            type: .number,
+            required: true,
+            validation: [
+                ValidationRule(type: .minValue, value: "18", message: "Must be at least 18 years old"),
+                ValidationRule(type: .maxValue, value: "100", message: "Must be at most 100 years old")
+            ],
+            dataSource: nil
+        )
+        
+        let view = FormFieldView(
+            field: field,
+            fieldState: .constant(FormFieldState(
+                value: "10",
+                error: "This field is required\nMust be at least 18 years old",
+                isLoading: false,
+                isReadOnly: false
+            ))
+        )
+        .padding()
+        
+        assertSnapshot(of: view, size: TestDevice.formFieldWithMultipleErrorsSize)
+    }
 }

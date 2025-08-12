@@ -141,5 +141,6 @@ extension BaseSnapshotTest {
         // Custom sizes for form fields
         static let formFieldSize = CGSize(width: 375, height: 120)
         static let formFieldWithErrorSize = CGSize(width: 375, height: 150)
+        static let formFieldWithMultipleErrorsSize = CGSize(width: 375, height: 180)
     }
 }

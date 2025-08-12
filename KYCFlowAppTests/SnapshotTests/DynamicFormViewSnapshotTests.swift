@@ -113,6 +113,78 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
     }
     
     @MainActor
+    func testDynamicFormViewWithMultipleErrors() {
+        let viewModel = DynamicFormViewModel()
+        viewModel.configuration = KYCConfiguration(
+            country: "US",
+            dataSources: [],
+            fields: [
+                FormField(
+                    id: "username",
+                    label: "Username",
+                    type: .text,
+                    required: true,
+                    validation: [
+                        ValidationRule(type: .minLength, value: "3", message: "Username must be at least 3 characters"),
+                        ValidationRule(type: .maxLength, value: "20", message: "Username must be at most 20 characters"),
+                        ValidationRule(type: .regex, value: "^[a-zA-Z0-9]+$", message: "Username must contain only letters and numbers")
+                    ],
+                    dataSource: nil
+                ),
+                FormField(
+                    id: "password",
+                    label: "Password",
+                    type: .text,
+                    required: true,
+                    validation: [
+                        ValidationRule(type: .minLength, value: "8", message: "Password must be at least 8 characters"),
+                        ValidationRule(type: .regex, value: ".*[A-Z].*", message: "Password must contain at least one uppercase letter"),
+                        ValidationRule(type: .regex, value: ".*[0-9].*", message: "Password must contain at least one number")
+                    ],
+                    dataSource: nil
+                ),
+                FormField(
+                    id: "age",
+                    label: "Age",
+                    type: .number,
+                    required: true,
+                    validation: [
+                        ValidationRule(type: .minValue, value: "18", message: "Must be at least 18 years old"),
+                        ValidationRule(type: .maxValue, value: "100", message: "Must be at most 100 years old")
+                    ],
+                    dataSource: nil
+                )
+            ]
+        )
+        
+        viewModel.formState = [
+            "username": FormFieldState(
+                value: "ab!", 
+                error: "Username must be at least 3 characters\nUsername must contain only letters and numbers", 
+                isLoading: false, 
+                isReadOnly: false
+            ),
+            "password": FormFieldState(
+                value: "pass", 
+                error: "Password must be at least 8 characters\nPassword must contain at least one uppercase letter\nPassword must contain at least one number", 
+                isLoading: false, 
+                isReadOnly: false
+            ),
+            "age": FormFieldState(
+                value: "150", 
+                error: "Must be at most 100 years old", 
+                isLoading: false, 
+                isReadOnly: false
+            )
+        ]
+        
+        let view = DynamicFormView(viewModel: viewModel, country: "US")
+            .frame(width: 375, height: 812)
+        
+        assertSnapshot(of: view, size: CGSize(width: 375, height: 812))
+    }
+    
+    @MainActor
     func testDynamicFormViewNLWithReadOnly() {
         let viewModel = DynamicFormViewModel()
         viewModel.configuration = KYCConfiguration(

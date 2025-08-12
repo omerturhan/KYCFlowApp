@@ -155,10 +155,20 @@ private extension InputFieldView {
     @ViewBuilder
     var errorView: some View {
         if let error = error {
-            Text(error)
-                .font(.caption)
-                .foregroundColor(.red)
-                .transition(.opacity)
+            VStack(alignment: .leading, spacing: 2) {
+                ForEach(error.components(separatedBy: "\n"), id: \.self) { errorLine in
+                    HStack(alignment: .top, spacing: 4) {
+                        Text("•")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                        Text(errorLine)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+            .transition(.opacity)
         }
     }
     

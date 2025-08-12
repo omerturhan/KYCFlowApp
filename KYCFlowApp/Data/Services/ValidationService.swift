@@ -25,30 +25,38 @@ final class ValidationService: ValidationServiceProtocol {
     }
     
     func validateField(_ field: FormField, value: Any?) -> ValidationResult {
+        var errors: [String] = []
+        
         // Check required first
         if field.required {
             let requiredResult = validateRequired(value: value, message: "This field is required")
             if !requiredResult.isValid {
-                return requiredResult
+                errors.append(contentsOf: requiredResult.errorMessages)
             }
         }
         
         // If field has validation rules, validate them
         if let rules = field.validation {
-            return validateAllRules(value: value, rules: rules)
+            let rulesResult = validateAllRules(value: value, rules: rules)
+            if !rulesResult.isValid {
+                errors.append(contentsOf: rulesResult.errorMessages)
+            }
         }
         
-        return .valid
+        return errors.isEmpty ? .valid : .invalid(errors)
     }
     
     func validateAllRules(value: Any?, rules: [ValidationRule]) -> ValidationResult {
+        var errors: [String] = []
+        
         for rule in rules {
             let result = validate(value: value, rule: rule)
             if !result.isValid {
-                return result
+                errors.append(contentsOf: result.errorMessages)
             }
         }
-        return .valid
+        
+        return errors.isEmpty ? .valid : .invalid(errors)
     }
     
     // MARK: - Private validation methods
