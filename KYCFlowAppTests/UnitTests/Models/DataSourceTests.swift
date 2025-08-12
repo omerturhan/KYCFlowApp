@@ -2,7 +2,6 @@ import XCTest
 @testable import KYCFlowApp
 
 final class DataSourceTests: BaseTestCase {
-    
     func testDataSourceInitialization() {
         let dataSource = DataSource(
             id: "user_profile",

@@ -2,7 +2,6 @@ import XCTest
 @testable import KYCFlowApp
 
 final class KYCConfigurationTests: BaseTestCase {
-    
     func testKYCConfigurationInitialization() {
         let config = KYCConfiguration(country: "NL")
         
@@ -89,6 +88,7 @@ final class KYCConfigurationTests: BaseTestCase {
         XCTAssertEqual(config, decoded)
     }
     
+    // swiftlint:disable:next function_body_length
     func testKYCConfigurationCompleteExample() {
         let dataSources = [
             DataSource(

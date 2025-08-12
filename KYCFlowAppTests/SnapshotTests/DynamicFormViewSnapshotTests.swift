@@ -4,7 +4,6 @@ import SwiftUI
 @testable import KYCFlowApp
 
 final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
-    
     @MainActor
     func testDynamicFormViewWithFields() {
         let viewModel = DynamicFormViewModel()
@@ -102,7 +101,12 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
         )
         
         viewModel.formState = [
-            "email": FormFieldState(value: "invalid", error: "Please enter a valid email", isLoading: false, isReadOnly: false),
+            "email": FormFieldState(
+                value: "invalid",
+                error: "Please enter a valid email",
+                isLoading: false,
+                isReadOnly: false
+            ),
             "age": FormFieldState(value: "17", error: "Must be at least 18", isLoading: false, isReadOnly: false)
         ]
         
@@ -113,6 +117,7 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
     }
     
     @MainActor
+    // swiftlint:disable:next function_body_length
     func testDynamicFormViewWithMultipleErrors() {
         let viewModel = DynamicFormViewModel()
         viewModel.configuration = KYCConfiguration(
@@ -126,8 +131,16 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
                     required: true,
                     validation: [
                         ValidationRule(type: .minLength, value: "3", message: "Username must be at least 3 characters"),
-                        ValidationRule(type: .maxLength, value: "20", message: "Username must be at most 20 characters"),
-                        ValidationRule(type: .regex, value: "^[a-zA-Z0-9]+$", message: "Username must contain only letters and numbers")
+                        ValidationRule(
+                            type: .maxLength,
+                            value: "20",
+                            message: "Username must be at most 20 characters"
+                        ),
+                        ValidationRule(
+                            type: .regex,
+                            value: "^[a-zA-Z0-9]+$",
+                            message: "Username must contain only letters and numbers"
+                        )
                     ],
                     dataSource: nil
                 ),
@@ -138,8 +151,16 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
                     required: true,
                     validation: [
                         ValidationRule(type: .minLength, value: "8", message: "Password must be at least 8 characters"),
-                        ValidationRule(type: .regex, value: ".*[A-Z].*", message: "Password must contain at least one uppercase letter"),
-                        ValidationRule(type: .regex, value: ".*[0-9].*", message: "Password must contain at least one number")
+                        ValidationRule(
+                            type: .regex,
+                            value: ".*[A-Z].*",
+                            message: "Password must contain at least one uppercase letter"
+                        ),
+                        ValidationRule(
+                            type: .regex,
+                            value: ".*[0-9].*",
+                            message: "Password must contain at least one number"
+                        )
                     ],
                     dataSource: nil
                 ),
@@ -159,21 +180,25 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
         
         viewModel.formState = [
             "username": FormFieldState(
-                value: "ab!", 
-                error: "Username must be at least 3 characters\nUsername must contain only letters and numbers", 
-                isLoading: false, 
+                value: "ab!",
+                error: "Username must be at least 3 characters\nUsername must contain only letters and numbers",
+                isLoading: false,
                 isReadOnly: false
             ),
             "password": FormFieldState(
-                value: "pass", 
-                error: "Password must be at least 8 characters\nPassword must contain at least one uppercase letter\nPassword must contain at least one number", 
-                isLoading: false, 
+                value: "pass",
+                error: """
+                    Password must be at least 8 characters
+                    Password must contain at least one uppercase letter
+                    Password must contain at least one number
+                    """,
+                isLoading: false,
                 isReadOnly: false
             ),
             "age": FormFieldState(
-                value: "150", 
-                error: "Must be at most 100 years old", 
-                isLoading: false, 
+                value: "150",
+                error: "Must be at most 100 years old",
+                isLoading: false,
                 isReadOnly: false
             )
         ]
@@ -185,6 +210,7 @@ final class DynamicFormViewSnapshotTests: BaseSnapshotTest {
     }
     
     @MainActor
+    // swiftlint:disable:next function_body_length
     func testDynamicFormViewNLWithReadOnly() {
         let viewModel = DynamicFormViewModel()
         viewModel.configuration = KYCConfiguration(

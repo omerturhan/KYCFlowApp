@@ -2,15 +2,15 @@ import Foundation
 
 open class MockUserProfileRepository: UserProfileRepository {
     private let simulatedDelay: TimeInterval
-    
+
     public init(simulatedDelay: TimeInterval = 0.5) {
         self.simulatedDelay = simulatedDelay
     }
-    
+
     open func fetchUserProfile(country: String) async throws -> [String: Any] {
         // Simulate network delay
         try await Task.sleep(nanoseconds: UInt64(simulatedDelay * 1_000_000_000))
-        
+
         switch country.uppercased() {
             case "NL":
                 // Return mocked Dutch user profile

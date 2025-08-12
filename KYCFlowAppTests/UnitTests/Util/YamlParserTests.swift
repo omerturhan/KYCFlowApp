@@ -2,7 +2,7 @@ import XCTest
 @testable import KYCFlowApp
 
 final class YamlParserTests: BaseTestCase {
-    
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var sut: YamlParser!
     
     override func setUp() {

@@ -2,7 +2,7 @@ import XCTest
 @testable import KYCFlowApp
 
 final class LocalKYCConfigurationRepositoryTests: BaseTestCase {
-    
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var sut: LocalKYCConfigurationRepository!
     
     override func setUp() {

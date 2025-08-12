@@ -4,16 +4,16 @@ struct DynamicFormView: View {
     @ObservedObject var viewModel: DynamicFormViewModel
     let country: String
     let onSubmit: ([String: Any]) -> Void
-    
+
     @State private var isSubmitting = false
     @FocusState private var focusedField: String?
-    
+
     init(viewModel: DynamicFormViewModel, country: String, onSubmit: @escaping ([String: Any]) -> Void = { _ in }) {
         self.viewModel = viewModel
         self.country = country
         self.onSubmit = onSubmit
     }
-    
+
     var body: some View {
         ZStack {
             if viewModel.isLoading && viewModel.configuration == nil {
@@ -42,7 +42,6 @@ struct DynamicFormView: View {
 // MARK: - View Components
 
 private extension DynamicFormView {
-    
     var loadingView: some View {
         VStack(spacing: 20) {
             ProgressView()
@@ -52,7 +51,7 @@ private extension DynamicFormView {
                 .foregroundColor(.secondary)
         }
     }
-    
+
     var emptyStateView: some View {
         VStack(spacing: 20) {
             Image(systemName: "doc.text.magnifyingglass")
@@ -67,13 +66,13 @@ private extension DynamicFormView {
         }
         .padding()
     }
-    
+
     func formContent(config: KYCConfiguration) -> some View {
         ScrollView {
             VStack(spacing: 20) {
                 // Form header
                 formHeader(config: config)
-                
+
                 // Form fields
                 VStack(spacing: 16) {
                     ForEach(config.fields, id: \.id) { field in
@@ -95,7 +94,7 @@ private extension DynamicFormView {
                 .padding()
                 .background(Color(UIColor.systemBackground))
                 .cornerRadius(12)
-                
+
                 // Form footer with validation status
                 formFooter
             }
@@ -111,13 +110,13 @@ private extension DynamicFormView {
             }
         }
     }
-    
+
     func formHeader(config: KYCConfiguration) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Please complete all required fields")
                 .font(.headline)
-            
-            if let dataSources = config.dataSources.first(where: { $0.type == .api }) {
+
+            if config.dataSources.contains(where: { $0.type == .api }) {
                 HStack {
                     Image(systemName: "info.circle.fill")
                         .foregroundColor(.blue)
@@ -129,8 +128,9 @@ private extension DynamicFormView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
     var formFooter: some View {
+        // swiftlint:disable closure_body_length
         VStack(spacing: 16) {
             if viewModel.isLoading {
                 HStack {
@@ -141,7 +141,7 @@ private extension DynamicFormView {
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             Button(action: submitForm) {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
@@ -155,7 +155,7 @@ private extension DynamicFormView {
                 .cornerRadius(12)
             }
             .disabled(isSubmitting)
-            
+
             if let errorCount = errorCount, errorCount > 0 {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
@@ -166,23 +166,23 @@ private extension DynamicFormView {
                 }
             }
         }
+        // swiftlint:enable closure_body_length
     }
 }
 
 // MARK: - Actions
 
 private extension DynamicFormView {
-    
     func submitForm() {
         focusedField = nil
         isSubmitting = true
-        
+
         // Simulate async submission
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             // Submit form and get the result
             let submittedData = viewModel.submitForm()
             isSubmitting = false
-            
+
             // Only navigate if validation passed and we have data
             if !submittedData.isEmpty {
                 onSubmit(submittedData)
@@ -195,20 +195,19 @@ private extension DynamicFormView {
 // MARK: - Helper Methods
 
 private extension DynamicFormView {
-    
     func countryName(for code: String) -> String {
         switch code.uppercased() {
-        case "NL":
-            return "Netherlands KYC"
-        case "US":
-            return "USA KYC"
-        case "DE":
-            return "Germany KYC"
-        default:
+            case "NL":
+                return "Netherlands KYC"
+            case "US":
+                return "USA KYC"
+            case "DE":
+                return "Germany KYC"
+            default:
             return code + " KYC"
         }
     }
-    
+
     var errorCount: Int? {
         let errors = viewModel.formState.values.filter { $0.hasError }.count
         return errors > 0 ? errors : nil
@@ -229,7 +228,7 @@ struct DynamicFormView_Previews: PreviewProvider {
                 country: "US"
             )
             .previewDisplayName("US Form")
-            
+
             // Loading state
             DynamicFormView(
                 viewModel: {

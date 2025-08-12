@@ -3,7 +3,7 @@ import SwiftUI
 struct CountrySelectionView: View {
     @StateObject private var viewModel: CountrySelectionViewModel
     let onCountrySelected: (String) -> Void
-    
+
     init(
         viewModel: CountrySelectionViewModel? = nil,
         onCountrySelected: @escaping (String) -> Void
@@ -11,7 +11,7 @@ struct CountrySelectionView: View {
         self._viewModel = StateObject(wrappedValue: viewModel ?? CountrySelectionViewModel())
         self.onCountrySelected = onCountrySelected
     }
-    
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -40,7 +40,6 @@ struct CountrySelectionView: View {
 // MARK: - View Components
 
 private extension CountrySelectionView {
-    
     var loadingView: some View {
         VStack(spacing: 20) {
             ProgressView()
@@ -50,9 +49,8 @@ private extension CountrySelectionView {
                 .foregroundColor(.secondary)
         }
     }
-    
-    @ViewBuilder
-    var countryList: some View {
+
+    @ViewBuilder var countryList: some View {
         if viewModel.availableCountries.isEmpty {
             emptyStateView
         } else {
@@ -69,17 +67,17 @@ private extension CountrySelectionView {
             .background(Color(UIColor.secondarySystemBackground))
         }
     }
-    
+
     var emptyStateView: some View {
         VStack(spacing: 20) {
             Image(systemName: "globe")
                 .font(.system(size: 60))
                 .foregroundColor(.secondary)
-            
+
             Text("No Countries Available")
                 .font(.headline)
                 .foregroundColor(.primary)
-            
+
             Text("Please check your internet connection or try again later.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
@@ -89,29 +87,29 @@ private extension CountrySelectionView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(UIColor.secondarySystemBackground))
     }
-    
+
     @ViewBuilder
     func countryRow(for country: String) -> some View {
-        Button(action: {
+        Button {
             onCountrySelected(country)
-        }) {
+        } label: {
             HStack {
                 // Country flag emoji
                 Text(countryFlag(for: country))
                     .font(.largeTitle)
-                
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(countryName(for: country))
                         .font(.headline)
                         .foregroundColor(.primary)
-                    
+
                     Text(countryDescription(for: country))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
                     .font(.body)
@@ -120,7 +118,7 @@ private extension CountrySelectionView {
             .background(Color(UIColor.systemBackground))
         }
         .buttonStyle(PlainButtonStyle())
-        
+
         if country != viewModel.availableCountries.last {
             Divider()
                 .padding(.leading, 60)
@@ -131,42 +129,41 @@ private extension CountrySelectionView {
 // MARK: - Helper Methods
 
 private extension CountrySelectionView {
-    
     func countryFlag(for code: String) -> String {
         switch code.uppercased() {
-        case "NL":
-            return "🇳🇱"
-        case "US":
-            return "🇺🇸"
-        case "DE":
-            return "🇩🇪"
-        default:
+            case "NL":
+                return "🇳🇱"
+            case "US":
+                return "🇺🇸"
+            case "DE":
+                return "🇩🇪"
+            default:
             return "🏳️"
         }
     }
-    
+
     func countryName(for code: String) -> String {
         switch code.uppercased() {
-        case "NL":
-            return "Netherlands"
-        case "US":
-            return "United States"
-        case "DE":
-            return "Germany"
-        default:
+            case "NL":
+                return "Netherlands"
+            case "US":
+                return "United States"
+            case "DE":
+                return "Germany"
+            default:
             return code
         }
     }
-    
+
     func countryDescription(for code: String) -> String {
         switch code.uppercased() {
-        case "NL":
-            return "Personal data fetched from API"
-        case "US":
-            return "Standard KYC form"
-        case "DE":
-            return "EU compliant form"
-        default:
+            case "NL":
+                return "Personal data fetched from API"
+            case "US":
+                return "Standard KYC form"
+            case "DE":
+                return "EU compliant form"
+            default:
             return "Custom configuration"
         }
     }
@@ -179,10 +176,10 @@ struct CountrySelectionView_Previews: PreviewProvider {
         Group {
             // Normal state with countries
             CountrySelectionView { country in
-                print("Selected: \(country)")
+                _ = country
             }
             .previewDisplayName("With Countries")
-            
+
             // Loading state
             CountrySelectionView(
                 viewModel: {
@@ -190,9 +187,10 @@ struct CountrySelectionView_Previews: PreviewProvider {
                     vm.isLoading = true
                     return vm
                 }()
-            ) { _ in }
+            ) { _ in
+            }
             .previewDisplayName("Loading")
-            
+
             // Error state
             CountrySelectionView(
                 viewModel: {
@@ -200,7 +198,8 @@ struct CountrySelectionView_Previews: PreviewProvider {
                     vm.errorMessage = "Failed to load countries"
                     return vm
                 }()
-            ) { _ in }
+            ) { _ in
+            }
             .previewDisplayName("Error")
         }
     }

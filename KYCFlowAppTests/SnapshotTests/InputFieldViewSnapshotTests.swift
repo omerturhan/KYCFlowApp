@@ -4,7 +4,6 @@ import SwiftUI
 @testable import KYCFlowApp
 
 final class InputFieldViewSnapshotTests: BaseSnapshotTest {
-    
     // MARK: - Text Field Tests
     
     func testTextFieldNormal() {
@@ -25,7 +24,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testTextFieldEmpty() {
@@ -46,7 +45,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testTextFieldWithError() {
@@ -67,7 +66,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldWithErrorSize)
+        assertSnapshot(of: view, size: Size.formFieldWithErrorSize)
     }
     
     func testTextFieldReadOnly() {
@@ -89,7 +88,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Number Field Tests
@@ -112,7 +111,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testNumberFieldWithError() {
@@ -133,7 +132,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldWithErrorSize)
+        assertSnapshot(of: view, size: Size.formFieldWithErrorSize)
     }
     
     func testNumberFieldReadOnly() {
@@ -155,7 +154,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Date Field Tests
@@ -178,7 +177,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testDateFieldEmpty() {
@@ -199,7 +198,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testDateFieldReadOnly() {
@@ -221,7 +220,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Common State Tests
@@ -244,7 +243,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testOptionalField() {
@@ -265,7 +264,7 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testLongLabel() {
@@ -286,6 +285,6 @@ final class InputFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
 }

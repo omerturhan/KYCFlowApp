@@ -2,7 +2,6 @@ import XCTest
 @testable import KYCFlowApp
 
 final class UserProfileTests: BaseTestCase {
-    
     func testUserProfileInitialization() {
         let profile = UserProfile(
             firstName: "Jan",

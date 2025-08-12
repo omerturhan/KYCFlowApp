@@ -2,8 +2,9 @@ import XCTest
 @testable import KYCFlowApp
 
 final class CountrySelectionViewModelTests: BaseTestCase {
-    
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var sut: CountrySelectionViewModel!
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var mockRepository: MockKYCConfigurationRepository!
     
     @MainActor
@@ -53,8 +54,6 @@ final class CountrySelectionViewModelTests: BaseTestCase {
         XCTAssertFalse(sut.isLoading)
         XCTAssertNotNil(sut.errorMessage)
     }
-    
-    
 }
 
 // Mock repository for testing

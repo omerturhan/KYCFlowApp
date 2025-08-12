@@ -4,7 +4,7 @@ struct KYCConfiguration: Codable, Equatable {
     let country: String
     let dataSources: [DataSource]
     let fields: [FormField]
-    
+
     init(
         country: String,
         dataSources: [DataSource] = [],

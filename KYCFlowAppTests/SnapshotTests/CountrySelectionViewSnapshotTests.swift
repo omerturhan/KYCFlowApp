@@ -4,7 +4,6 @@ import SwiftUI
 @testable import KYCFlowApp
 
 final class CountrySelectionViewSnapshotTests: BaseSnapshotTest {
-    
     @MainActor
     func testCountrySelectionViewNormal() {
         let viewModel = CountrySelectionViewModel()

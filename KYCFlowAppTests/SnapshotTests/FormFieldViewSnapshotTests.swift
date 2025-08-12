@@ -4,7 +4,6 @@ import SwiftUI
 @testable import KYCFlowApp
 
 final class FormFieldViewSnapshotTests: BaseSnapshotTest {
-    
     // MARK: - Text Field Tests
     
     func testFormFieldViewText() {
@@ -28,7 +27,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testFormFieldViewTextWithError() {
@@ -52,7 +51,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldWithErrorSize)
+        assertSnapshot(of: view, size: Size.formFieldWithErrorSize)
     }
     
     // MARK: - Number Field Tests
@@ -78,7 +77,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testFormFieldViewNumberReadOnly() {
@@ -103,7 +102,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Date Field Tests
@@ -129,7 +128,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     func testFormFieldViewDateLoading() {
@@ -154,7 +153,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Mixed States Tests
@@ -180,7 +179,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldSize)
+        assertSnapshot(of: view, size: Size.formFieldSize)
     }
     
     // MARK: - Multiple Errors Tests
@@ -194,7 +193,11 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
             validation: [
                 ValidationRule(type: .minLength, value: "3", message: "Username must be at least 3 characters"),
                 ValidationRule(type: .maxLength, value: "20", message: "Username must be at most 20 characters"),
-                ValidationRule(type: .regex, value: "^[a-zA-Z0-9]+$", message: "Username must contain only letters and numbers")
+                ValidationRule(
+                    type: .regex,
+                    value: "^[a-zA-Z0-9]+$",
+                    message: "Username must contain only letters and numbers"
+                )
             ],
             dataSource: nil
         )
@@ -210,7 +213,7 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldWithMultipleErrorsSize)
+        assertSnapshot(of: view, size: Size.formFieldWithMultipleErrorsSize)
     }
     
     func testFormFieldViewNumberWithMultipleErrors() {
@@ -237,6 +240,6 @@ final class FormFieldViewSnapshotTests: BaseSnapshotTest {
         )
         .padding()
         
-        assertSnapshot(of: view, size: TestDevice.formFieldWithMultipleErrorsSize)
+        assertSnapshot(of: view, size: Size.formFieldWithMultipleErrorsSize)
     }
 }

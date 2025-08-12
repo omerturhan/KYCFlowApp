@@ -2,11 +2,15 @@ import XCTest
 @testable import KYCFlowApp
 
 @MainActor
+// swiftlint:disable file_length type_body_length function_body_length
 final class DynamicFormViewModelTests: BaseTestCase {
-    
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var sut: DynamicFormViewModel!
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var mockConfigRepository: MockKYCConfigurationRepository!
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var mockUserRepository: TestableMockUserProfileRepository!
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var mockValidationService: MockValidationService!
     
     override func setUp() {

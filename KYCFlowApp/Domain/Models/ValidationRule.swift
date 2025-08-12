@@ -32,15 +32,15 @@ struct ValidationResult: Equatable {
     static func invalid(_ message: String) -> ValidationResult {
         ValidationResult(isValid: false, errorMessages: [message])
     }
-    
+
     static func invalid(_ messages: [String]) -> ValidationResult {
         ValidationResult(isValid: false, errorMessages: messages)
     }
-    
+
     var errorMessage: String? {
         errorMessages.first
     }
-    
+
     var allErrorMessages: String? {
         errorMessages.isEmpty ? nil : errorMessages.joined(separator: "\n")
     }

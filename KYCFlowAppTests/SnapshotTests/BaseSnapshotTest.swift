@@ -3,51 +3,6 @@ import SnapshotTesting
 import SwiftUI
 
 class BaseSnapshotTest: XCTestCase {
-    
-    // MARK: - Configuration
-    
-    /// Set this to true to record new snapshots for all tests
-    /// Can be overridden by environment variable SNAPSHOT_RECORDING
-    static var isRecordingMode: Bool = false
-    
-    // MARK: - Lifecycle
-    
-    override func setUp() {
-        super.setUp()
-        
-        // Check environment variable for recording mode
-        if ProcessInfo.processInfo.environment["SNAPSHOT_RECORDING"] == "true" {
-            isRecording = true
-        } else {
-            isRecording = Self.isRecordingMode
-        }
-        
-        // Configure snapshot testing
-        // Use a fixed size for consistent snapshots across different devices
-        SnapshotTesting.diffTool = "ksdiff"
-        
-        // Set default image precision if needed
-        // This helps with minor rendering differences between test runs
-        // SnapshotTesting.defaultImagePrecision = 0.98
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-        isRecording = false
-    }
-    
-    // MARK: - Helper Methods
-    
-    /// Records new snapshots for a specific test
-    func recordSnapshot() {
-        isRecording = true
-    }
-    
-    /// Returns whether we're in recording mode
-    var isInRecordingMode: Bool {
-        isRecording ?? false
-    }
-    
     /// Asserts a snapshot with consistent configuration
     /// - Parameters:
     ///   - view: The view to snapshot
@@ -104,40 +59,10 @@ class BaseSnapshotTest: XCTestCase {
     }
 }
 
-// MARK: - Test Configuration Extension
-
-extension BaseSnapshotTest {
-    
-    /// Enables recording mode for all snapshot tests
-    static func enableRecordingMode() {
-        isRecordingMode = true
-    }
-    
-    /// Disables recording mode for all snapshot tests
-    static func disableRecordingMode() {
-        isRecordingMode = false
-    }
-    
-    /// Runs a test in recording mode
-    /// - Parameter testBlock: The test block to run
-    func withRecordingMode(_ testBlock: () throws -> Void) rethrows {
-        let previousValue = isRecording
-        isRecording = true
-        defer { isRecording = previousValue }
-        try testBlock()
-    }
-}
-
 // MARK: - Common Test Devices
 
 extension BaseSnapshotTest {
-    enum TestDevice {
-        static let iPhone13 = ViewImageConfig.iPhone13
-        static let iPhone13Pro = ViewImageConfig.iPhone13Pro
-        static let iPhone13ProMax = ViewImageConfig.iPhone13ProMax
-        static let iPhoneSe = ViewImageConfig.iPhoneSe
-        static let iPad = ViewImageConfig.iPadPro11
-        
+    enum Size {
         // Custom sizes for form fields
         static let formFieldSize = CGSize(width: 375, height: 120)
         static let formFieldWithErrorSize = CGSize(width: 375, height: 150)

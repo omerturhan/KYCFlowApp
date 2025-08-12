@@ -7,16 +7,16 @@ struct InputFieldView: View {
     @Binding var value: String
     let error: String?
     let isLoading: Bool
-    
+
     // Date picker state
     @State private var selectedDate = Date()
     @State private var showDatePicker = false
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             // Common label for all field types
             fieldLabel
-            
+
             // Field input based on type
             HStack {
                 if field.readOnly {
@@ -24,13 +24,13 @@ struct InputFieldView: View {
                 } else {
                     editableField
                 }
-                
+
                 if isLoading {
                     ProgressView()
                         .scaleEffect(0.8)
                 }
             }
-            
+
             // Common error display
             errorView
         }
@@ -44,7 +44,6 @@ struct InputFieldView: View {
 // MARK: - View Components
 
 private extension InputFieldView {
-    
     /// Common label with required indicator
     var fieldLabel: some View {
         HStack(alignment: .top) {
@@ -53,17 +52,17 @@ private extension InputFieldView {
                 .foregroundColor(.primary)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
-            
+
             if field.required {
                 Text("*")
                     .font(.headline)
                     .foregroundColor(.red)
             }
-            
+
             Spacer()
         }
     }
-    
+
     /// Read-only field display
     var readOnlyField: some View {
         Text(displayValue)
@@ -76,20 +75,19 @@ private extension InputFieldView {
                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
             )
     }
-    
+
     /// Editable field based on type
-    @ViewBuilder
-    var editableField: some View {
+    @ViewBuilder var editableField: some View {
         switch field.type {
-        case .text:
-            textInput
-        case .number:
-            numberInput
-        case .date:
+            case .text:
+                textInput
+            case .number:
+                numberInput
+            case .date:
             dateInput
         }
     }
-    
+
     /// Text input field
     var textInput: some View {
         TextField(field.label, text: $value)
@@ -105,7 +103,7 @@ private extension InputFieldView {
             .autocapitalization(.none)
             .disableAutocorrection(true)
     }
-    
+
     /// Number input field
     var numberInput: some View {
         TextField(field.label, text: Binding(
@@ -126,12 +124,12 @@ private extension InputFieldView {
         .keyboardType(.numberPad)
         .disabled(isLoading)
     }
-    
+
     /// Date input field
     var dateInput: some View {
-        Button(action: {
+        Button {
             showDatePicker.toggle()
-        }) {
+        } label: {
             HStack {
                 Text(displayValue)
                     .foregroundColor(value.isEmpty ? .gray : .primary)
@@ -150,10 +148,9 @@ private extension InputFieldView {
         }
         .disabled(isLoading)
     }
-    
+
     /// Error message view
-    @ViewBuilder
-    var errorView: some View {
+    @ViewBuilder var errorView: some View {
         if let error = error {
             VStack(alignment: .leading, spacing: 2) {
                 ForEach(error.components(separatedBy: "\n"), id: \.self) { errorLine in
@@ -171,7 +168,7 @@ private extension InputFieldView {
             .transition(.opacity)
         }
     }
-    
+
     /// Date picker sheet
     var datePickerSheet: some View {
         NavigationView {
@@ -183,7 +180,7 @@ private extension InputFieldView {
                 )
                 .datePickerStyle(GraphicalDatePickerStyle())
                 .padding()
-                
+
                 Spacer()
             }
             .navigationTitle("Select Date")
@@ -194,7 +191,7 @@ private extension InputFieldView {
                         showDatePicker = false
                     }
                 }
-                
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         value = DateFormatters.isoFormatter.string(from: selectedDate)
@@ -217,20 +214,19 @@ private extension InputFieldView {
 // MARK: - Display Value Logic
 
 private extension InputFieldView {
-    
     /// Computed display value based on field type
     var displayValue: String {
         switch field.type {
-        case .text:
-            return value.isEmpty && field.readOnly ? "-" : value
-            
-        case .number:
-            if value.isEmpty {
-                return field.readOnly ? "-" : ""
-            }
-            return field.readOnly ? formatNumber(value) : value
-            
-        case .date:
+            case .text:
+                return value.isEmpty && field.readOnly ? "-" : value
+
+            case .number:
+                if value.isEmpty {
+                    return field.readOnly ? "-" : ""
+                }
+                return field.readOnly ? formatNumber(value) : value
+
+            case .date:
             if value.isEmpty {
                 return field.readOnly ? "-" : "Select date"
             }
@@ -240,10 +236,12 @@ private extension InputFieldView {
             return value
         }
     }
-    
+
     /// Format number with thousands separator for display
     func formatNumber(_ value: String) -> String {
-        guard let number = Int(value) else { return value }
+        guard let number = Int(value) else {
+            return value
+        }
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSeparator = ","
@@ -259,7 +257,7 @@ private enum DateFormatters {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
-    
+
     static let displayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -289,7 +287,7 @@ struct InputFieldView_Previews: PreviewProvider {
                 error: nil,
                 isLoading: false
             )
-            
+
             // Number field with error
             InputFieldView(
                 field: FormField(
@@ -305,7 +303,7 @@ struct InputFieldView_Previews: PreviewProvider {
                 error: "Must be at least 18 years old",
                 isLoading: false
             )
-            
+
             // Date field read-only
             InputFieldView(
                 field: FormField(
@@ -321,7 +319,7 @@ struct InputFieldView_Previews: PreviewProvider {
                 error: nil,
                 isLoading: false
             )
-            
+
             // Loading field
             InputFieldView(
                 field: FormField(

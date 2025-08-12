@@ -3,12 +3,12 @@ import SwiftUI
 struct FormFieldView: View {
     let field: FormField
     @Binding var fieldState: FormFieldState
-    
+
     var body: some View {
         InputFieldView(
             field: field,
             value: Binding(
-                get: { 
+                get: {
                     // Convert the value to string for display
                     if let stringValue = fieldState.value as? String {
                         return stringValue
@@ -19,12 +19,12 @@ struct FormFieldView: View {
                     }
                     return ""
                 },
-                set: { 
+                set: {
                     // Store the value based on field type
                     switch field.type {
-                    case .text, .date:
-                        fieldState.value = $0
-                    case .number:
+                        case .text, .date:
+                            fieldState.value = $0
+                        case .number:
                         // Store as string but validate it's numeric
                         fieldState.value = $0.filter { $0.isNumber }
                     }
@@ -60,7 +60,7 @@ struct FormFieldView_Previews: PreviewProvider {
                     isReadOnly: false
                 ))
             )
-            
+
             // Number field with error
             FormFieldView(
                 field: FormField(
@@ -79,7 +79,7 @@ struct FormFieldView_Previews: PreviewProvider {
                     isReadOnly: false
                 ))
             )
-            
+
             // Date field read-only
             FormFieldView(
                 field: FormField(
@@ -98,7 +98,7 @@ struct FormFieldView_Previews: PreviewProvider {
                     isReadOnly: true
                 ))
             )
-            
+
             // Loading field
             FormFieldView(
                 field: FormField(

@@ -10,7 +10,7 @@ struct DataSource: Codable, Equatable {
     let type: DataSourceType
     let endpoint: String?
     let fields: [String]
-    
+
     init(
         id: String,
         type: DataSourceType,

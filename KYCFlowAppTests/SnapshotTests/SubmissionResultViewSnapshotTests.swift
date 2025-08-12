@@ -4,19 +4,20 @@ import SwiftUI
 @testable import KYCFlowApp
 
 final class SubmissionResultViewSnapshotTests: BaseSnapshotTest {
-    
     @MainActor
     func testSubmissionResultViewWithData() {
         let view = SubmissionResultView(
-            submittedData: [
-                "first_name": "John",
-                "last_name": "Doe",
-                "birth_date": "1990-01-15",
-                "email": "john.doe@example.com",
-                "phone": "+1234567890",
-                "address": "123 Main St, New York, NY 10001",
-                "country": "US"
-            ]
+            viewModel: SubmissionResultViewModel(
+                submittedData: [
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "birth_date": "1990-01-15",
+                    "email": "john.doe@example.com",
+                    "phone": "+1234567890",
+                    "address": "123 Main St, New York, NY 10001",
+                    "country": "US"
+                ]
+            )
         )
         .frame(width: 375, height: 812)
         
@@ -26,10 +27,12 @@ final class SubmissionResultViewSnapshotTests: BaseSnapshotTest {
     @MainActor
     func testSubmissionResultViewMinimalData() {
         let view = SubmissionResultView(
-            submittedData: [
-                "name": "Test User",
-                "id": "12345"
-            ]
+            viewModel: SubmissionResultViewModel(
+                submittedData: [
+                    "name": "Test User",
+                    "id": "12345"
+                ]
+            )
         )
         .frame(width: 375, height: 812)
         
@@ -39,7 +42,7 @@ final class SubmissionResultViewSnapshotTests: BaseSnapshotTest {
     @MainActor
     func testSubmissionResultViewEmptyData() {
         let view = SubmissionResultView(
-            submittedData: [:]
+            viewModel: SubmissionResultViewModel(submittedData: [:])
         )
         .frame(width: 375, height: 812)
         
@@ -49,7 +52,8 @@ final class SubmissionResultViewSnapshotTests: BaseSnapshotTest {
     @MainActor
     func testSubmissionResultViewLongData() {
         let view = SubmissionResultView(
-            submittedData: [
+            viewModel: SubmissionResultViewModel(
+                submittedData: [
                 "first_name": "John",
                 "middle_name": "Michael",
                 "last_name": "Doe",
@@ -71,7 +75,8 @@ final class SubmissionResultViewSnapshotTests: BaseSnapshotTest {
                 "tax_id": "XXX-XX-1234",
                 "id_type": "passport",
                 "id_number": "P123456789"
-            ]
+                ]
+            )
         )
         .frame(width: 375, height: 812)
         

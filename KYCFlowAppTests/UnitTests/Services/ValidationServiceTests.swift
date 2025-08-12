@@ -2,7 +2,7 @@ import XCTest
 @testable import KYCFlowApp
 
 final class ValidationServiceTests: BaseTestCase {
-    
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var sut: ValidationService!
     
     override func setUp() {
@@ -64,7 +64,11 @@ final class ValidationServiceTests: BaseTestCase {
     }
     
     func testValidateRegexWithEmailPattern() {
-        let rule = ValidationRule(type: .regex, value: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", message: "Invalid email")
+        let rule = ValidationRule(
+            type: .regex,
+            value: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+            message: "Invalid email"
+        )
         
         XCTAssertTrue(sut.validate(value: "TEST@EXAMPLE.COM", rule: rule).isValid)
         XCTAssertFalse(sut.validate(value: "invalid.email", rule: rule).isValid)
@@ -185,7 +189,8 @@ final class ValidationServiceTests: BaseTestCase {
         
         XCTAssertFalse(sut.validateField(field, value: "").isValid) // Required fails
         XCTAssertFalse(sut.validateField(field, value: "short").isValid) // Min length fails
-        XCTAssertFalse(sut.validateField(field, value: "this is a very long password that exceeds limit").isValid) // Max length fails
+        // Max length fails
+        XCTAssertFalse(sut.validateField(field, value: "this is a very long password that exceeds limit").isValid)
         XCTAssertTrue(sut.validateField(field, value: "validpass123").isValid) // All pass
     }
     

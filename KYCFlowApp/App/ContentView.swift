@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.diContainer) private var diContainer
+    @Environment(\.diContainer)
+    private var diContainer
     @State private var navigationPath = NavigationPath()
     @State private var selectedCountry: String?
-    
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             CountrySelectionView(
@@ -22,16 +23,18 @@ struct ContentView: View {
             }
             .navigationDestination(for: NavigationDestination.self) { destination in
                 switch destination {
-                case .form(let country):
-                    DynamicFormView(
-                        viewModel: diContainer.makeKYCFormViewModel(),
-                        country: country
-                    ) { data in
-                        navigationPath.append(NavigationDestination.result(data: data))
-                    }
-                    
-                case .result(let data):
-                    SubmissionResultView(submittedData: data) {
+                    case .form(let country):
+                        DynamicFormView(
+                            viewModel: diContainer.makeKYCFormViewModel(),
+                            country: country
+                        ) { data in
+                            navigationPath.append(NavigationDestination.result(data: data))
+                        }
+
+                    case .result(let data):
+                    SubmissionResultView(
+                        viewModel: diContainer.makeSubmissionResultViewModel(submittedData: data)
+                    ) {
                         navigationPath = NavigationPath()
                         selectedCountry = nil
                     }
@@ -46,13 +49,13 @@ struct ContentView: View {
 enum NavigationDestination: Hashable {
     case form(country: String)
     case result(data: [String: Any])
-    
+
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .form(let country):
-            hasher.combine("form")
-            hasher.combine(country)
-        case .result(let data):
+            case .form(let country):
+                hasher.combine("form")
+                hasher.combine(country)
+            case .result(let data):
             hasher.combine("result")
             // Create a unique identifier for this specific result
             // Using object identity or a UUID would be better but we need deterministic hashing
@@ -69,14 +72,14 @@ enum NavigationDestination: Hashable {
             }
         }
     }
-    
+
     static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {
-        case (.form(let c1), .form(let c2)):
-            return c1 == c2
-        case (.result(let d1), .result(let d2)):
-            return NSDictionary(dictionary: d1).isEqual(to: d2)
-        default:
+            case let (.form(c1), .form(c2)):
+                return c1 == c2
+            case let (.result(d1), .result(d2)):
+                return NSDictionary(dictionary: d1).isEqual(to: d2)
+            default:
             return false
         }
     }
@@ -92,7 +95,7 @@ enum NavigationDestination: Hashable {
 #Preview("With Mock Data") {
     let container = DIContainer()
     container.configure(for: .development)
-    
+
     return ContentView()
         .injectDIContainer(container)
 }
